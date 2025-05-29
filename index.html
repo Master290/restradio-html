@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.restradio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            padding: 2rem;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 7rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            animation: glow 3s ease-in-out infinite alternate;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo .dot {
+            background: linear-gradient(45deg, #8b5cf6, #a855f7, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo .rest {
+            color: white;
+        }
+
+        .logo .radio {
+            background: linear-gradient(45deg, #8b5cf6, #a855f7, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.3)); }
+            to { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.6)); }
+        }
+
+        .play-button {
+            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .play-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .play-button:hover::before {
+            opacity: 1;
+        }
+
+        .play-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.4);
+        }
+
+        .play-button:active {
+            transform: scale(0.98);
+        }
+
+        .play-icon, .stop-icon {
+            fill: white;
+            width: 20px;
+            height: 20px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .play-icon {
+            margin-left: 2px;
+        }
+
+        .stop-icon {
+            display: none;
+        }
+
+        .now-playing {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.1rem;
+            color: #c084fc;
+            margin-bottom: 1.5rem;
+            min-height: 30px;
+        }
+
+        .now-playing.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .status {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(-15px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+        }
+
+        .status.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .loading {
+            display: none;
+            font-size: 0.9rem;
+            color: #8b5cf6;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.4s ease;
+        }
+
+        .loading.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 5rem;
+            }
+            
+            .play-button {
+                width: 55px;
+                height: 55px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <span class="dot">.</span><span class="rest">rest</span><span class="radio">radio</span>
+        </div>
+        
+        <div class="loading" id="loading">Подключение...</div>
+        
+        <div class="now-playing" id="nowPlaying"></div>
+        <div class="status" id="status"></div>
+
+        <button class="play-button" id="playButton">
+            <svg class="play-icon" viewBox="0 0 24 24">
+                <path d="M7 4v16l13-8z"/>
+            </svg>
+            <svg class="stop-icon" viewBox="0 0 24 24">
+                <rect x="6" y="6" width="12" height="12" rx="2"/>
+            </svg>
+        </button>
+    </div>
+
+    <audio id="audioPlayer" preload="none"></audio>
+
+    <script>
+        class RestRadioPlayer {
+            constructor() {
+                this.audio = document.getElementById('audioPlayer');
+                this.playButton = document.getElementById('playButton');
+                this.nowPlaying = document.getElementById('nowPlaying');
+                this.status = document.getElementById('status');
+                this.loading = document.getElementById('loading');
+                this.playIcon = document.querySelector('.play-icon');
+                this.stopIcon = document.querySelector('.stop-icon');
+                
+                this.isPlaying = false;
+                this.streamUrl = 'https://stream.restradio.online/live';
+                this.statusUrl = 'https://stream.restradio.online/status-json.xsl';
+                
+                this.init();
+            }
+
+            init() {
+                this.playButton.addEventListener('click', () => this.togglePlay());
+                this.audio.addEventListener('loadstart', () => this.showLoading());
+                this.audio.addEventListener('canplay', () => this.hideLoading());
+                this.audio.addEventListener('play', () => this.onPlay());
+                this.audio.addEventListener('pause', () => this.onPause());
+                this.audio.addEventListener('error', () => this.onError());
+                
+                // Обновляем информацию о треке каждые 10 секунд когда играет
+                setInterval(() => {
+                    if (this.isPlaying) {
+                        this.updateTrackInfo();
+                    }
+                }, 10000);
+            }
+
+            async togglePlay() {
+                if (this.isPlaying) {
+                    this.stop();
+                } else {
+                    await this.play();
+                }
+            }
+
+            async play() {
+                try {
+                    this.showLoading();
+                    this.audio.src = this.streamUrl;
+                    await this.audio.play();
+                    this.updateTrackInfo();
+                } catch (error) {
+                    console.error('Ошибка воспроизведения:', error);
+                    this.onError();
+                }
+            }
+
+            stop() {
+                this.audio.pause();
+                this.audio.src = '';
+                this.isPlaying = false;
+                this.updateUI();
+            }
+
+            showLoading() {
+                this.loading.classList.add('show');
+            }
+
+            hideLoading() {
+                this.loading.classList.remove('show');
+            }
+
+            onPlay() {
+                this.isPlaying = true;
+                this.updateUI();
+            }
+
+            onPause() {
+                this.isPlaying = false;
+                this.updateUI();
+            }
+
+            onError() {
+                this.isPlaying = false;
+                this.hideLoading();
+                this.nowPlaying.textContent = 'Ошибка подключения к радио';
+                this.nowPlaying.classList.add('show');
+                this.status.textContent = 'Проверьте подключение к интернету';
+                this.status.classList.add('show');
+                this.updateUI();
+            }
+
+            updateUI() {
+                if (this.isPlaying) {
+                    this.playIcon.style.display = 'none';
+                    this.stopIcon.style.display = 'block';
+                } else {
+                    this.playIcon.style.display = 'block';
+                    this.stopIcon.style.display = 'none';
+                    this.nowPlaying.classList.remove('show');
+                    this.status.classList.remove('show');
+                    this.status.textContent = '';
+                }
+            }
+
+            async updateTrackInfo() {
+                try {
+                    // Используем публичный CORS-прокси для обхода ограничений
+                    const corsProxyUrl = 'https://corsproxy.io/?url=';
+                    const response = await fetch(corsProxyUrl + encodeURIComponent(this.statusUrl));
+                    const data = await response.json();
+                    
+                    if (data.icestats && data.icestats.source) {
+                        const title = data.icestats.source.title || 'restradio.ru';
+                        const listeners = data.icestats.source.listeners || 0;
+                        
+                        this.nowPlaying.textContent = title;
+                        this.nowPlaying.classList.add('show');
+                        this.status.textContent = `Слушателей: ${listeners}`;
+                        this.status.classList.add('show');
+                    }
+                } catch (error) {
+                    console.error('Ошибка получения информации о треке:', error);
+                    this.showDefaultInfo();
+                }
+            }
+            
+            showDefaultInfo() {
+                // Показываем базовую информацию если API недоступен
+                this.nowPlaying.textContent = 'restradio.ru';
+                this.nowPlaying.classList.add('show');
+            }
+        }
+
+        // Инициализируем плеер когда страница загружена
+        document.addEventListener('DOMContentLoaded', () => {
+            new RestRadioPlayer();
+        });
+    </script>
+</body>
+</html>
