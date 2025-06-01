@@ -13,8 +13,12 @@
             box-sizing: border-box;
         }
 
+        html {
+            overflow: hidden; /* Crucial for full-page pseudo-elements */
+        }
+
         body {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            background: #000; /* Base black background */
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             color: white;
             min-height: 100vh;
@@ -22,7 +26,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow: hidden; /* Also good to have here */
+            position: relative; /* Context for z-indexed pseudo-elements */
         }
 
         .container {
@@ -182,6 +187,74 @@
                 height: 55px;
             }
         }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 1; }
+    }
+
+    body::before, body::after {
+        content: '';
+        position: fixed; /* Cover the whole viewport */
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: transparent; /* No actual background color */
+        z-index: -1; /* Behind all other body content */
+        animation: twinkle 10s infinite linear; /* Slow continuous twinkle for the layer */
+    }
+
+    /* Layer 1: Smaller, denser stars */
+    body::before {
+        box-shadow:
+            /* Generate about 50-70 small stars */
+            /* Format: x y size color (using 0px for blur and spread for size) */
+            /* Example: 5vw 10vh 0px 0px #FFF, ... */
+            /* I will create a list of these */
+            10vw 20vh 0px 0px rgba(255,255,255,0.8), 80vw 30vh 0px 0px rgba(255,255,255,0.7),
+            30vw 45vh 0px 0px rgba(255,255,255,0.9), 70vw 60vh 0px 0px rgba(255,255,255,0.6),
+            50vw 5vh 0px 0px rgba(255,255,255,0.8), 90vw 15vh 0px 0px rgba(255,255,255,0.7),
+            25vw 70vh 0px 0px rgba(255,255,255,0.9), 65vw 85vh 0px 0px rgba(255,255,255,0.6),
+            5vw 90vh 0px 0px rgba(255,255,255,0.8), 95vw 50vh 0px 0px rgba(255,255,255,0.7),
+            40vw 10vh 0px 0px rgba(200,200,255,0.7), 60vw 25vh 0px 0px rgba(200,200,255,0.6),
+            15vw 35vh 0px 0px rgba(200,200,255,0.8), 85vw 55vh 0px 0px rgba(200,200,255,0.7),
+            /* Add more for density */
+            5vw 50vh 0px 0px #FFF, 15vw 60vh 0px 0px #FFF, 25vw 5vh 0px 0px #FFF, 35vw 15vh 0px 0px #FFF,
+            45vw 25vh 0px 0px #FFF, 55vw 35vh 0px 0px #FFF, 65vw 45vh 0px 0px #FFF, 75vw 55vh 0px 0px #FFF,
+            85vw 65vh 0px 0px #FFF, 95vw 75vh 0px 0px #FFF, 5vw 85vh 0px 0px #FFF, 15vw 95vh 0px 0px #FFF,
+            22vw 33vh 0px 0px #FFF, 33vw 44vh 0px 0px #FFF, 44vw 55vh 0px 0px #FFF, 55vw 66vh 0px 0px #FFF,
+            66vw 77vh 0px 0px #FFF, 77vw 88vh 0px 0px #FFF, 88vw 99vh 0px 0px #FFF, 99vw 11vh 0px 0px #FFF,
+            11vw 22vh 0px 0px #FFF, 20vw 10vh 0px 0px #FFF, 30vw 20vh 0px 0px #FFF, 40vw 30vh 0px 0px #FFF,
+            50vw 40vh 0px 0px #FFF, 60vw 50vh 0px 0px #FFF, 70vw 60vh 0px 0px #FFF, 80vw 70vh 0px 0px #FFF,
+            90vw 80vh 0px 0px #FFF, 98vw 90vh 0px 0px #FFF, 2vw 5vh 0px 0px #FFF, 12vw 15vh 0px 0px #FFF,
+            22vw 25vh 0px 0px #FFF, 32vw 35vh 0px 0px #FFF, 42vw 45vh 0px 0px #FFF, 52vw 55vh 0px 0px #FFF,
+            62vw 65vh 0px 0px #FFF, 72vw 75vh 0px 0px #FFF, 82vw 85vh 0px 0px #FFF, 92vw 95vh 0px 0px #FFF;
+        animation-duration: 200s; /* Slower twinkle for this layer */
+        animation-delay: -100s; /* Start animation partway through */
+    }
+
+    /* Layer 2: Slightly larger, sparser stars, different animation */
+    body::after {
+        box-shadow:
+            /* Generate about 30-40 slightly larger/brighter stars */
+            /* Format: x y blur spread color (spread can be 1px for slightly larger) */
+            /* Example: 15vw 25vh 1px 1px #FFC, ... */
+            /* I will create a list of these */
+            5vw 15vh 0px 1px rgba(255,255,224,0.9), 95vw 25vh 0px 1px rgba(255,255,224,0.8),
+            20vw 35vh 0px 1px rgba(255,255,224,1), 80vw 45vh 0px 1px rgba(255,255,224,0.7),
+            30vw 55vh 0px 1px rgba(255,255,224,0.9), 70vw 65vh 0px 1px rgba(255,255,224,0.8),
+            40vw 75vh 0px 1px rgba(255,255,224,1), 60vw 85vh 0px 1px rgba(255,255,224,0.7),
+            10vw 95vh 0px 1px rgba(255,255,200,0.9), 90vw 5vh 0px 1px rgba(255,255,200,0.8),
+            /* Add more for density */
+            18vw 8vh 0px 1px #FFF, 28vw 18vh 0px 1px #FFF, 38vw 28vh 0px 1px #FFF, 48vw 38vh 0px 1px #FFF,
+            58vw 48vh 0px 1px #FFF, 68vw 58vh 0px 1px #FFF, 78vw 68vh 0px 1px #FFF, 88vw 78vh 0px 1px #FFF,
+            8vw 88vh 0px 1px #FFF, 18vw 98vh 0px 1px #FFF, 25vw 25vh 0px 1px #FFF, 35vw 35vh 0px 1px #FFF,
+            45vw 45vh 0px 1px #FFF, 55vw 55vh 0px 1px #FFF, 65vw 65vh 0px 1px #FFF, 75vw 75vh 0px 1px #FFF,
+            85vw 85vh 0px 1px #FFF, 95vw 95vh 0px 1px #FFF, 5vw 10vh 0px 1px #FFF, 15vw 20vh 0px 1px #FFF;
+        animation-duration: 150s; /* Different twinkle speed */
+        animation-delay: -50s;
+    }
     </style>
 </head>
 <body>
@@ -313,7 +386,7 @@
                 try {
                     // Используем публичный CORS-прокси для обхода ограничений
                     const corsProxyUrl = 'https://corsproxy.io/?url=';
-                    const response = await fetch(corsProxyUrl + encodeURIComponent(this.statusUrl));
+                    const response = await fetch(this.statusUrl);
                     const data = await response.json();
                     
                     if (data.icestats && data.icestats.source) {
