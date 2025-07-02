@@ -746,7 +746,7 @@
         <div class="footer-content">
             <span>© 2025 <a href="https://restradio.ru" target="_blank">restradio.ru</a></span>
             <span class="footer-separator">•</span>
-            <span>Все права на треки принадлежат их авторам</span>
+            <span id="listenerCount">Слушателей: ...</span>
             <span class="footer-separator">•</span>
             <span>Powered by <a href="https://cdnx.fun" target="_blank"><img src="https://cdnx.fun/logo.png" alt="CDNX" class="footer-logo"></a></span>
         </div>
@@ -760,7 +760,6 @@
                 this.audio = document.getElementById('audioPlayer');
                 this.waveContainer = document.getElementById('waveContainer');
                 
-                // Mini player elements
                 this.miniPlayer = document.getElementById('miniPlayer');
                 this.miniTitle = document.getElementById('miniTitle');
                 this.miniArtist = document.getElementById('miniArtist');
@@ -788,7 +787,6 @@
             init() {
                 this.miniToggleBtn.addEventListener('click', () => this.togglePlay());
                 
-                // Volume control event listeners
                 this.volumeBtn.addEventListener('click', () => this.toggleMute());
                 this.volumeSlider.addEventListener('input', (e) => this.setVolume(e.target.value));
                 this.volumeSlider.addEventListener('change', (e) => this.setVolume(e.target.value));
@@ -800,11 +798,13 @@
                 this.audio.addEventListener('error', () => this.onError());
                 
                 this.updateTrackInfo();
+                this.updateListenerCount();
                 
                 setInterval(() => {
                     if (this.isPlaying) {
                         this.updateTrackInfo();
                     }
+                    this.updateListenerCount();
                 }, 10000);
 
                 this.keepAwake();
@@ -909,6 +909,21 @@
 
             hideMiniPlayer() {
                 this.miniPlayer.classList.remove('show');
+            }
+
+            async updateListenerCount() {
+                try {
+                    const response = await fetch(this.statusUrl);
+                    const data = await response.json();
+
+                    if (data.icestats && data.icestats.source) {
+                        const listeners = data.icestats.source.listeners || '...';
+                        document.getElementById('listenerCount').textContent = `Слушателей: ${listeners}`;
+                    }
+                } catch (error) {
+                    console.error('Ошибка получения количества слушателей:', error);
+                    document.getElementById('listenerCount').textContent = 'Слушателей: ?';
+                }
             }
 
             updateMiniPlayer(trackInfo) {
