@@ -17,7 +17,7 @@
     <meta property="og:site_name" content=".restradio">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content=".restradio - Drum & Bass, Jungle, Electronic Music 24/7">
-    <meta name="twitter:description" content=" радиостанция с отборной электронной музыкой. Слушайте джангл, drum & bass, breakbeat и другие жанры 24/7. Качественный стрим, новинки и классика.">
+    <meta name="twitter:description" content="Радиостанция с отборной электронной музыкой. Слушайте джангл, drum & bass, breakbeat и другие жанры 24/7. Качественный стрим, новинки и классика.">
     <meta name="twitter:image" content="favicon.ico">
     <meta name="theme-color" content="#8b5cf6">
     <link rel="canonical" href="https://restradio.ru">
@@ -528,21 +528,68 @@
                 font-size: 0.6rem;
                 max-height: 32px;
             }
-            
+
             .footer-content {
                 gap: 4px;
             }
-            
+
             .footer-separator {
                 display: none;
             }
-            
+
             .container {
                 padding-bottom: 80px;
             }
-            
+
             .footer-logo {
                 height: 12px;
+            }
+
+            .contact-btn {
+                padding: 3px 8px;
+                font-size: 0.6rem;
+                border-radius: 8px;
+            }
+
+            .contact-card {
+                width: 95%;
+                border-radius: 15px;
+            }
+
+            .contact-header {
+                padding: 15px;
+                border-radius: 15px 15px 0 0;
+            }
+
+            .contact-header h3 {
+                font-size: 1.1rem;
+            }
+
+            .contact-content {
+                padding: 15px;
+            }
+
+            .contact-item {
+                padding: 10px 0;
+                gap: 12px;
+            }
+
+            .contact-icon {
+                width: 35px;
+                height: 35px;
+            }
+
+            .contact-icon svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .contact-label {
+                font-size: 0.8rem;
+            }
+
+            .contact-link {
+                font-size: 0.9rem;
             }
         }
 
@@ -679,6 +726,575 @@
                 height: 40px;
             }
         }
+
+
+        .track-history {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .track-history.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .track-history-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .track-history-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .track-history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .track-history-header h3 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .close-history {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-history:hover {
+            background: rgba(139, 92, 246, 0.3);
+            color: #a855f7;
+            transform: scale(1.05);
+        }
+
+        .close-history svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .track-history-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            max-height: calc(80vh - 80px);
+        }
+
+        .track-history-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .track-history-content::-webkit-scrollbar-track {
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 3px;
+        }
+
+        .track-history-content::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.3);
+            border-radius: 3px;
+        }
+
+        .track-history-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.5);
+        }
+
+
+        .track-history .track-item * {
+            position: static !important;
+            float: none !important;
+        }
+
+        .track-history .track-item {
+            contain: layout style;
+        }
+
+        .loading {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 1rem;
+            padding: 40px 20px;
+        }
+
+        .track-item {
+            display: flex !important;
+            align-items: center !important;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .track-item:hover {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: rgba(139, 92, 246, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .track-artwork {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            background: rgba(139, 92, 246, 0.2);
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .track-artwork img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .track-artwork .placeholder {
+            font-size: 24px;
+            color: #8b5cf6;
+            opacity: 0.6;
+        }
+
+        .track-info {
+            flex: 1;
+            min-width: 0;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center;
+            gap: 2px;
+            position: relative;
+        }
+
+        .track-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+
+        .track-artist {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+
+        .track-time {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .track-actions {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 6px;
+            flex-shrink: 0;
+            align-items: center;
+            position: relative;
+        }
+
+        .track-action-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .track-action-btn:hover {
+            background: rgba(139, 92, 246, 0.3);
+            color: #a855f7;
+            transform: scale(1.05);
+        }
+
+        .track-action-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .track-action-btn.playing {
+            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+            color: white;
+            animation: pulse-preview 2s infinite;
+        }
+
+        @keyframes pulse-preview {
+            0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(139, 92, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+        }
+
+        .track-action-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .track-action-btn .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .apple-music-btn {
+            background: rgba(250, 50, 80, 0.2) !important;
+            color: #fa3250 !important;
+        }
+
+        .apple-music-btn:hover {
+            background: rgba(250, 50, 80, 0.3) !important;
+            color: #ff4d6d !important;
+        }
+
+
+        .contact-btn {
+            background: none;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: #8b5cf6;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .contact-btn:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.5);
+            color: #a855f7;
+        }
+
+
+        .contact-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .contact-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .contact-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 400px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            z-index: 1002;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .contact-card.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .contact-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .contact-header h3 {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .close-contact {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-contact:hover {
+            background: rgba(139, 92, 246, 0.3);
+            color: #a855f7;
+            transform: scale(1.05);
+        }
+
+        .close-contact svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .contact-content {
+            padding: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 0;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(139, 92, 246, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-icon svg {
+            width: 20px;
+            height: 20px;
+            color: #8b5cf6;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-bottom: 2px;
+        }
+
+        .contact-link {
+            color: #8b5cf6;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: #a855f7;
+        }
+
+        .contact-divider {
+            height: 1px;
+            background: rgba(139, 92, 246, 0.2);
+            margin: 15px 0;
+        }
+
+        @media (max-width: 768px) {
+            .track-history {
+                width: 95%;
+                max-height: 85vh;
+                border-radius: 15px;
+            }
+
+            .track-history-header {
+                padding: 15px;
+            }
+
+            .track-history-header h3 {
+                font-size: 1.3rem;
+            }
+
+            .track-history-content {
+                padding: 15px;
+            }
+
+            .track-item {
+                padding: 12px;
+                gap: 12px;
+                min-height: 70px;
+            }
+
+            .track-artwork {
+                width: 50px;
+                height: 50px;
+            }
+
+            .track-artwork .placeholder {
+                font-size: 20px;
+            }
+
+            .track-actions {
+                gap: 4px;
+            }
+
+            .track-action-btn {
+                width: 28px;
+                height: 28px;
+            }
+
+            .track-action-btn svg {
+                width: 14px;
+                height: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .track-history {
+                width: 98%;
+                max-height: 90vh;
+                border-radius: 12px;
+                top: 50%;
+                transform: translate(-50%, -50%) scale(0.95);
+            }
+
+            .track-history.show {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            .track-history-header {
+                padding: 12px;
+            }
+
+            .track-history-header h3 {
+                font-size: 1.2rem;
+            }
+
+            .track-history-content {
+                padding: 12px;
+            }
+
+            .track-item {
+                padding: 10px;
+                gap: 10px;
+                min-height: 65px;
+            }
+
+            .track-artwork {
+                width: 45px;
+                height: 45px;
+            }
+
+            .track-title {
+                font-size: 0.9rem;
+            }
+
+            .track-artist {
+                font-size: 0.8rem;
+            }
+
+            .track-time {
+                font-size: 0.75rem;
+            }
+
+            .track-actions {
+                gap: 3px;
+            }
+
+            .track-action-btn {
+                width: 26px;
+                height: 26px;
+            }
+
+            .track-action-btn svg {
+                width: 12px;
+                height: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -723,6 +1339,12 @@
                     </div>
                 </div>
                 
+                <button class="mini-control-btn" id="historyBtn" title="История треков">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/>
+                    </svg>
+                </button>
+
                 <button class="mini-control-btn" id="miniToggleBtn">
                     <svg class="play-icon" viewBox="0 0 24 24">
                         <path d="M7 4v16l13-8z"/>
@@ -733,7 +1355,23 @@
                 </button>
             </div>
         </div>
-        
+
+
+        <div class="track-history-overlay" id="trackHistoryOverlay"></div>
+        <div class="track-history" id="trackHistory">
+            <div class="track-history-header">
+                <h3>История треков</h3>
+                <button class="close-history" id="closeHistory">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="track-history-content" id="trackHistoryContent">
+                <div class="loading">Загрузка...</div>
+            </div>
+        </div>
+
     </div>
 
     <div class="scrolling-banner">
@@ -748,9 +1386,75 @@
             <span class="footer-separator">•</span>
             <span id="listenerCount">Слушателей: ...</span>
             <span class="footer-separator">•</span>
+            <button class="contact-btn" id="contactBtn">Связаться</button>
+            <span class="footer-separator">•</span>
             <span>Powered by <a href="https://cdnx.fun" target="_blank"><img src="https://cdnx.fun/logo.png" alt="CDNX" class="footer-logo"></a></span>
         </div>
     </footer>
+
+
+    <div class="contact-overlay" id="contactOverlay"></div>
+    <div class="contact-card" id="contactCard">
+        <div class="contact-header">
+            <h3>Связаться с нами</h3>
+            <button class="close-contact" id="closeContact">
+                <svg viewBox="0 0 24 24">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div class="contact-content">
+            <div class="contact-item">
+                <div class="contact-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-label">Telegram</div>
+                    <a href="https://t.me/everydaylinuxuser" target="_blank" class="contact-link">t.me/everydaylinuxuser</a>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <div class="contact-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-label">Email</div>
+                    <a href="mailto:daniar@remo.rest" class="contact-link">daniar@remo.rest</a>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <div class="contact-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-label">GitHub</div>
+                    <a href="https://github.com/master290" target="_blank" class="contact-link">github.com/master290</a>
+                </div>
+            </div>
+
+            <div class="contact-divider"></div>
+
+            <div class="contact-item">
+                <div class="contact-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-label">Наш телеграм канал</div>
+                    <a href="https://t.me/remoarchive" target="_blank" class="contact-link">t.me/remoarchive</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <audio id="audioPlayer" preload="none"></audio>
 
@@ -767,6 +1471,17 @@
                 this.miniToggleBtn = document.getElementById('miniToggleBtn');
                 this.miniPlayIcon = this.miniToggleBtn.querySelector('.play-icon');
                 this.miniStopIcon = this.miniToggleBtn.querySelector('.stop-icon');
+
+                this.historyBtn = document.getElementById('historyBtn');
+                this.trackHistory = document.getElementById('trackHistory');
+                this.trackHistoryOverlay = document.getElementById('trackHistoryOverlay');
+                this.closeHistory = document.getElementById('closeHistory');
+                this.trackHistoryContent = document.getElementById('trackHistoryContent');
+
+                this.contactBtn = document.getElementById('contactBtn');
+                this.contactOverlay = document.getElementById('contactOverlay');
+                this.contactCard = document.getElementById('contactCard');
+                this.closeContact = document.getElementById('closeContact');
                 
                 this.volumeControl = document.getElementById('volumeControl');
                 this.volumeBtn = document.getElementById('volumeBtn');
@@ -779,14 +1494,29 @@
                 this.isPlaying = false;
                 this.streamUrl = 'https://stream.restradio.online/live';
                 this.statusUrl = 'https://stream.restradio.online/status-json.xsl';
+                this.historyUrl = 'https://stream.restradio.online/track_history.json';
                 this.currentTrack = { title: '', artist: '' };
+
+
+                this.previewAudio = null;
+                this.currentPreviewBtn = null;
                 
                 this.init();
             }
 
             init() {
                 this.miniToggleBtn.addEventListener('click', () => this.togglePlay());
-                
+                this.historyBtn.addEventListener('click', () => this.showTrackHistory());
+                this.closeHistory.addEventListener('click', () => this.hideTrackHistory());
+
+
+                this.trackHistoryOverlay.addEventListener('click', () => this.hideTrackHistory());
+
+
+                this.contactBtn.addEventListener('click', () => this.showContactCard());
+                this.closeContact.addEventListener('click', () => this.hideContactCard());
+                this.contactOverlay.addEventListener('click', () => this.hideContactCard());
+
                 this.volumeBtn.addEventListener('click', () => this.toggleMute());
                 this.volumeSlider.addEventListener('input', (e) => this.setVolume(e.target.value));
                 this.volumeSlider.addEventListener('change', (e) => this.setVolume(e.target.value));
@@ -832,6 +1562,8 @@
 
             async play() {
                 try {
+
+                    this.stopPreview();
                     this.audio.src = this.streamUrl;
                     await this.audio.play();
                     this.updateTrackInfo();
@@ -884,7 +1616,7 @@
 
             async updateTrackInfo() {
                 try {
-                    const corsProxyUrl = 'https://corsproxy.io/?url=';
+
                     const response = await fetch(this.statusUrl);
                     const data = await response.json();
                     
@@ -994,7 +1726,12 @@
                 const volume = value / 100;
                 this.audio.volume = volume;
                 this.volumeSlider.value = value;
-                
+
+
+                if (this.previewAudio && !this.previewAudio.paused) {
+                    this.previewAudio.volume = volume;
+                }
+
                 if (value == 0 || this.isMuted) {
                     this.volumeHighIcon.style.display = 'none';
                     this.volumeMutedIcon.style.display = 'block';
@@ -1002,10 +1739,10 @@
                     this.volumeHighIcon.style.display = 'block';
                     this.volumeMutedIcon.style.display = 'none';
                 }
-                
+
                 const percentage = value;
                 this.volumeSlider.style.background = `linear-gradient(to right, #8b5cf6 0%, #a855f7 ${percentage}%, rgba(139, 92, 246, 0.2) ${percentage}%, rgba(139, 92, 246, 0.2) 100%)`;
-                
+
                 if (value > 0) {
                     this.isMuted = false;
                     this.lastVolume = value;
@@ -1077,10 +1814,258 @@
             }
 
 
+            async showTrackHistory() {
+                this.trackHistoryOverlay.classList.add('show');
+                this.trackHistory.classList.add('show');
+                this.trackHistoryContent.innerHTML = '<div class="loading">Загрузка...</div>';
+
+                try {
+                    const response = await fetch(this.historyUrl);
+                    const tracks = await response.json();
+                    this.renderTrackHistory(tracks);
+                } catch (error) {
+                    console.error('Ошибка загрузки истории треков:', error);
+                    this.trackHistoryContent.innerHTML = '<div class="loading">Ошибка загрузки истории треков</div>';
+                }
+            }
+
+            hideTrackHistory() {
+                this.trackHistoryOverlay.classList.remove('show');
+                this.trackHistory.classList.remove('show');
+
+                this.stopPreview();
+            }
+
+            renderTrackHistory(tracks) {
+                if (!tracks || tracks.length === 0) {
+                    this.trackHistoryContent.innerHTML = '<div class="loading">История треков пуста</div>';
+                    return;
+                }
+
+
+                this.trackHistoryContent.innerHTML = '';
+
+
+                tracks.forEach(track => {
+                    const trackElement = this.createTrackElement(track);
+                    this.trackHistoryContent.appendChild(trackElement);
+                });
+            }
+
+            createTrackItem(track) {
+                const timestamp = new Date(track.timestamp);
+                const timeString = timestamp.toLocaleTimeString('ru-RU', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const artworkHtml = track.artwork_url
+                    ? `<img src="${track.artwork_url}" alt="Album artwork" onerror="this.parentElement.innerHTML='<div class=\\"placeholder\\">🎵</div>'">`
+                    : '<div class="placeholder">🎵</div>';
+
+                const previewButton = track.preview_url
+                    ? `<button class="track-action-btn" onclick="window.open('${track.preview_url}', '_blank')" title="Прослушать превью">
+                         <svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg>
+                       </button>`
+                    : '';
+
+                const itunesButton = track.itunes_url
+                    ? `<button class="track-action-btn apple-music-btn" onclick="window.open('${track.itunes_url}', '_blank')" title="Открыть в Apple Music">
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="800px" height="800px" viewBox="0 0 32 32"> <path d="M31.995 8.167c0-0.984-0.083-1.964-0.318-2.922-0.422-1.745-1.417-3.078-2.906-4.057-0.766-0.5-1.609-0.807-2.505-0.969-0.688-0.125-1.385-0.182-2.083-0.198-0.052-0.005-0.109-0.016-0.167-0.021h-16.031c-0.203 0.016-0.406 0.026-0.609 0.036-0.995 0.057-1.984 0.161-2.922 0.536-1.781 0.703-3.068 1.932-3.818 3.703-0.26 0.599-0.391 1.234-0.484 1.88-0.078 0.521-0.12 1.047-0.135 1.573 0 0.042-0.010 0.083-0.010 0.125v16.297c0.010 0.188 0.021 0.375 0.031 0.563 0.068 1.089 0.208 2.167 0.667 3.167 0.865 1.891 2.318 3.135 4.313 3.734 0.557 0.172 1.141 0.25 1.724 0.302 0.74 0.073 1.479 0.083 2.219 0.083h14.708c0.698 0 1.396-0.047 2.094-0.135 1.099-0.141 2.13-0.464 3.063-1.078 1.12-0.74 1.964-1.719 2.505-2.943 0.25-0.563 0.391-1.161 0.495-1.766 0.151-0.901 0.182-1.813 0.182-2.724-0.005-5.063 0-10.125-0.005-15.188zM23.432 13.484v7.615c0 0.557-0.078 1.104-0.328 1.609-0.385 0.786-1.010 1.281-1.849 1.521-0.464 0.135-0.943 0.208-1.427 0.229-1.266 0.063-2.365-0.797-2.589-2.047-0.193-1.031 0.302-2.167 1.385-2.698 0.427-0.208 0.891-0.333 1.354-0.427 0.505-0.109 1.010-0.208 1.51-0.323 0.37-0.083 0.609-0.307 0.682-0.688 0.021-0.083 0.026-0.172 0.026-0.255 0-2.422 0-4.844 0-7.26 0-0.083-0.016-0.167-0.036-0.245-0.052-0.203-0.198-0.323-0.406-0.313-0.214 0.010-0.422 0.047-0.63 0.089-1.016 0.198-2.031 0.401-3.042 0.609l-4.932 0.995c-0.021 0.005-0.047 0.016-0.068 0.016-0.37 0.104-0.5 0.271-0.516 0.656-0.005 0.057 0 0.115 0 0.172-0.005 3.469 0 6.938-0.005 10.406 0 0.563-0.063 1.115-0.286 1.635-0.37 0.854-1.026 1.391-1.911 1.646-0.469 0.135-0.948 0.214-1.438 0.229-1.276 0.047-2.339-0.802-2.557-2.057-0.188-1.083 0.307-2.25 1.536-2.771 0.479-0.198 0.974-0.307 1.479-0.411 0.38-0.078 0.766-0.156 1.146-0.234 0.51-0.109 0.776-0.432 0.802-0.953v-0.198c0-3.948 0-7.896 0-11.844 0-0.167 0.021-0.333 0.057-0.495 0.094-0.38 0.365-0.599 0.729-0.688 0.339-0.089 0.688-0.151 1.031-0.224 0.979-0.198 1.953-0.396 2.932-0.589l3.026-0.615c0.896-0.177 1.786-0.359 2.682-0.536 0.292-0.057 0.589-0.12 0.885-0.141 0.411-0.036 0.698 0.224 0.74 0.641 0.010 0.099 0.016 0.198 0.016 0.297 0 2.547 0 5.094 0 7.641z"/> </svg>
+                       </button>`
+                    : '';
+
+
+                const safeTitle = this.escapeHtml(track.track || 'Неизвестный трек');
+                const safeArtist = this.escapeHtml(track.artist || 'Неизвестный исполнитель');
+
+                return `
+                    <div class="track-item">
+                        <div class="track-artwork">
+                            ${artworkHtml}
+                        </div>
+                        <div class="track-info">
+                            <div class="track-title">${safeTitle}</div>
+                            <div class="track-artist">${safeArtist}</div>
+                            <div class="track-time">${timeString}</div>
+                        </div>
+                        <div class="track-actions">
+                            ${previewButton}
+                            ${itunesButton}
+                        </div>
+                    </div>
+                `;
+            }
+
+            createTrackElement(track) {
+                const timestamp = new Date(track.timestamp);
+                const timeString = timestamp.toLocaleTimeString('ru-RU', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+
+                const trackItem = document.createElement('div');
+                trackItem.className = 'track-item';
+
+
+                const artwork = document.createElement('div');
+                artwork.className = 'track-artwork';
+
+                if (track.artwork_url) {
+                    const img = document.createElement('img');
+                    img.src = track.artwork_url;
+                    img.alt = 'Album artwork';
+                    img.onerror = () => {
+                        artwork.innerHTML = '<div class="placeholder">🎵</div>';
+                    };
+                    artwork.appendChild(img);
+                } else {
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'placeholder';
+                    placeholder.textContent = '🎵';
+                    artwork.appendChild(placeholder);
+                }
+
+
+                const trackInfo = document.createElement('div');
+                trackInfo.className = 'track-info';
+
+                const title = document.createElement('div');
+                title.className = 'track-title';
+                title.textContent = track.track || 'Неизвестный трек';
+
+                const artist = document.createElement('div');
+                artist.className = 'track-artist';
+                artist.textContent = track.artist || 'Неизвестный исполнитель';
+
+                const time = document.createElement('div');
+                time.className = 'track-time';
+                time.textContent = timeString;
+
+                trackInfo.appendChild(title);
+                trackInfo.appendChild(artist);
+                trackInfo.appendChild(time);
+
+
+                const actions = document.createElement('div');
+                actions.className = 'track-actions';
+
+                if (track.preview_url) {
+                    const previewBtn = document.createElement('button');
+                    previewBtn.className = 'track-action-btn preview-btn';
+                    previewBtn.title = 'Прослушать превью';
+                    previewBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg>';
+                    previewBtn.onclick = () => this.togglePreview(track.preview_url, previewBtn);
+                    actions.appendChild(previewBtn);
+                }
+
+                if (track.itunes_url) {
+                    const itunesBtn = document.createElement('button');
+                    itunesBtn.className = 'track-action-btn apple-music-btn';
+                    itunesBtn.title = 'Открыть в Apple Music';
+                    itunesBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="800px" height="800px" viewBox="0 0 32 32"> <path d="M31.995 8.167c0-0.984-0.083-1.964-0.318-2.922-0.422-1.745-1.417-3.078-2.906-4.057-0.766-0.5-1.609-0.807-2.505-0.969-0.688-0.125-1.385-0.182-2.083-0.198-0.052-0.005-0.109-0.016-0.167-0.021h-16.031c-0.203 0.016-0.406 0.026-0.609 0.036-0.995 0.057-1.984 0.161-2.922 0.536-1.781 0.703-3.068 1.932-3.818 3.703-0.26 0.599-0.391 1.234-0.484 1.88-0.078 0.521-0.12 1.047-0.135 1.573 0 0.042-0.010 0.083-0.010 0.125v16.297c0.010 0.188 0.021 0.375 0.031 0.563 0.068 1.089 0.208 2.167 0.667 3.167 0.865 1.891 2.318 3.135 4.313 3.734 0.557 0.172 1.141 0.25 1.724 0.302 0.74 0.073 1.479 0.083 2.219 0.083h14.708c0.698 0 1.396-0.047 2.094-0.135 1.099-0.141 2.13-0.464 3.063-1.078 1.12-0.74 1.964-1.719 2.505-2.943 0.25-0.563 0.391-1.161 0.495-1.766 0.151-0.901 0.182-1.813 0.182-2.724-0.005-5.063 0-10.125-0.005-15.188zM23.432 13.484v7.615c0 0.557-0.078 1.104-0.328 1.609-0.385 0.786-1.010 1.281-1.849 1.521-0.464 0.135-0.943 0.208-1.427 0.229-1.266 0.063-2.365-0.797-2.589-2.047-0.193-1.031 0.302-2.167 1.385-2.698 0.427-0.208 0.891-0.333 1.354-0.427 0.505-0.109 1.010-0.208 1.51-0.323 0.37-0.083 0.609-0.307 0.682-0.688 0.021-0.083 0.026-0.172 0.026-0.255 0-2.422 0-4.844 0-7.26 0-0.083-0.016-0.167-0.036-0.245-0.052-0.203-0.198-0.323-0.406-0.313-0.214 0.010-0.422 0.047-0.63 0.089-1.016 0.198-2.031 0.401-3.042 0.609l-4.932 0.995c-0.021 0.005-0.047 0.016-0.068 0.016-0.37 0.104-0.5 0.271-0.516 0.656-0.005 0.057 0 0.115 0 0.172-0.005 3.469 0 6.938-0.005 10.406 0 0.563-0.063 1.115-0.286 1.635-0.37 0.854-1.026 1.391-1.911 1.646-0.469 0.135-0.948 0.214-1.438 0.229-1.276 0.047-2.339-0.802-2.557-2.057-0.188-1.083 0.307-2.25 1.536-2.771 0.479-0.198 0.974-0.307 1.479-0.411 0.38-0.078 0.766-0.156 1.146-0.234 0.51-0.109 0.776-0.432 0.802-0.953v-0.198c0-3.948 0-7.896 0-11.844 0-0.167 0.021-0.333 0.057-0.495 0.094-0.38 0.365-0.599 0.729-0.688 0.339-0.089 0.688-0.151 1.031-0.224 0.979-0.198 1.953-0.396 2.932-0.589l3.026-0.615c0.896-0.177 1.786-0.359 2.682-0.536 0.292-0.057 0.589-0.12 0.885-0.141 0.411-0.036 0.698 0.224 0.74 0.641 0.010 0.099 0.016 0.198 0.016 0.297 0 2.547 0 5.094 0 7.641z"/> </svg>';
+                    itunesBtn.onclick = () => window.open(track.itunes_url, '_blank');
+                    actions.appendChild(itunesBtn);
+                }
+
+
+                trackItem.appendChild(artwork);
+                trackItem.appendChild(trackInfo);
+                trackItem.appendChild(actions);
+
+                return trackItem;
+            }
+
+            playPreview(url, button) {
+
+                this.stopPreview();
+
+
+                button.innerHTML = '<svg viewBox="0 0 24 24" class="loading-spinner"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="31.416" stroke-dashoffset="31.416"><animate attributeName="stroke-dasharray" dur="2s" values="0 31.416;15.708 15.708;0 31.416" repeatCount="indefinite"/><animate attributeName="stroke-dashoffset" dur="2s" values="0;-15.708;-31.416" repeatCount="indefinite"/></circle></svg>';
+                button.title = 'Загрузка превью...';
+                button.disabled = true;
+
+
+                this.previewAudio = new Audio(url);
+                this.previewAudio.volume = this.audio.volume;
+                this.currentPreviewBtn = button;
+
+
+                this.previewAudio.addEventListener('canplay', () => {
+
+                    this.previewAudio.volume = this.audio.volume;
+                    button.innerHTML = '<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
+                    button.title = 'Остановить превью';
+                    button.disabled = false;
+                    button.classList.add('playing');
+                });
+
+                this.previewAudio.addEventListener('ended', () => {
+                    this.stopPreview();
+                });
+
+                this.previewAudio.addEventListener('error', () => {
+                    console.error('Ошибка воспроизведения превью');
+                    button.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v-2h-2v2zm0-4h2V7h-2v6z"/></svg>';
+                    button.title = 'Ошибка загрузки превью';
+                    button.disabled = false;
+                    setTimeout(() => this.stopPreview(), 2000);
+                });
+
+
+                this.previewAudio.play().catch(error => {
+                    console.error('Ошибка запуска превью:', error);
+                    this.stopPreview();
+                });
+            }
+
+            stopPreview() {
+                if (this.previewAudio) {
+                    this.previewAudio.pause();
+                    this.previewAudio = null;
+                }
+
+                if (this.currentPreviewBtn) {
+
+                    this.currentPreviewBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg>';
+                    this.currentPreviewBtn.title = 'Прослушать превью';
+                    this.currentPreviewBtn.classList.remove('playing');
+                    this.currentPreviewBtn.disabled = false;
+                    this.currentPreviewBtn = null;
+                }
+            }
+
+            togglePreview(url, button) {
+                if (this.currentPreviewBtn === button && this.previewAudio && !this.previewAudio.paused) {
+
+                    this.stopPreview();
+                } else {
+
+                    this.playPreview(url, button);
+                }
+            }
+
+            showContactCard() {
+                this.contactOverlay.classList.add('show');
+                this.contactCard.classList.add('show');
+            }
+
+            hideContactCard() {
+                this.contactOverlay.classList.remove('show');
+                this.contactCard.classList.remove('show');
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
             keepAwake() {
                 if (navigator.wakeLock) {
                     let wakeLock = null;
-                    
+
                     const requestWakeLock = async () => {
                         try {
                             wakeLock = await navigator.wakeLock.request('screen');
@@ -1095,11 +2080,11 @@
                     this.audio.addEventListener('play', () => {
                         requestWakeLock();
                     });
-                    
+
                     this.audio.addEventListener('pause', () => {
                         if (wakeLock) wakeLock.release();
                     });
-                    
+
                     document.addEventListener('visibilitychange', () => {
                         if (document.visibilityState === 'visible' && this.isPlaying) {
                             requestWakeLock();
